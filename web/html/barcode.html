@@ -1,0 +1,41 @@
+<html>
+    <body onload="imagething();">
+        <h1>uumm</h1>
+        <canvas id="bc" ></canvas>
+        <p id="display">no barcode</p>
+        <p id="count">no count</p>
+        <script>
+var imageCapture;
+var barcodeDetector;
+var i = 0;
+
+function imagething(){
+            // check compatibility
+    if (!('BarcodeDetector' in window)) {
+        document.getElementById('display').innerHTML = 'Barcode Detector is not supported by this browser.';
+    } else {
+        document.getElementById('display').innerHTML = 'Barcode Detector supported!';
+
+    // create new detector
+    barcodeDetector = new BarcodeDetector({formats: ['code_39', 'codabar', 'ean_13']});
+
+    imageCapture = new ImageCapture();
+    console.log(imageCapture);
+alert('taco');
+    setInterval(function() {
+        document.getElementById('display').innerHTML = i.toString();
+        i++;
+ /*           imageCapture.takePhoto().then(img => {
+                const canvas = document.querySelector('#bc');
+                drawCanvas(canvas, img);
+                i++;
+
+            });
+            document.getElementById('count').innerHTML = i.toString();  */
+        }, 1000);
+    }
+}
+        </script>
+    </body>
+
+</html>

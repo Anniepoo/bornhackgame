@@ -1,0 +1,4 @@
+created(1628087360.5832863).
+assert(u_prop(annie,password_hash('$pbkdf2-sha512$t=131072$Aziz17grKWd47WqW2eSexw$gW8ve5VoGNTPleV8wl5lqc17VKypZrI0H3o/2iQxMhcs/DaCgX/YgPsPA6HcoUy7gPXqQX9Tg9TyIPy3oR/Raw'))).
+assert(u_prop(annie,email('annie@theelginworks.com'))).
+assert(u_prop(annie,role(user))).

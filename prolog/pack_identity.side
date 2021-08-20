@@ -1,0 +1,154 @@
+{
+  "id": "5ac0e6f5-0903-43b8-83ab-2136997c041a",
+  "version": "2.0",
+  "name": "pack_identity",
+  "url": "http://localhost:5000/",
+  "tests": [{
+    "id": "e1daa7b8-3b66-4cac-a773-7c54a0b0f66b",
+    "name": "homepageloads",
+    "commands": [{
+      "id": "e292e28a-6486-4178-b949-dedbdf561160",
+      "comment": "",
+      "command": "click",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Home Page')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e7433a81-14fa-4199-92a6-0995266aa0ff",
+      "comment": "home page loads and shows the words Home Page",
+      "command": "assertElementPresent",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Home Page')]", "xpath:innerText"]
+      ],
+      "value": "Home Page"
+    }]
+  }, {
+    "id": "d9f06fb3-1cda-40f7-a332-b4750a92e577",
+    "name": "mustlogin",
+    "commands": [{
+      "id": "83f18271-e609-4586-abde-c374ed95f78d",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:5000/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4d420e14-536d-439c-8744-44505d54a9e6",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"],
+        ["xpath=//html[contains(.,'Preparing to run your test')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9e902179-12aa-4a2c-8016-93857e043734",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=h1",
+      "targets": [
+        ["css=h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Home Page')]", "xpath:innerText"]
+      ],
+      "value": "Home Page"
+    }, {
+      "id": "f691f0a7-b2fc-4b26-8368-4a7a4c75a3ca",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=link to secret",
+      "targets": [
+        ["linkText=link to secret", "linkText"],
+        ["css=a", "css:finder"],
+        ["xpath=//a[contains(text(),'link to secret')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/secret')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'link to secret')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3924cb62-1d87-4c5c-8ef3-34ecb776a939",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "linkText=forgot password or user name",
+      "targets": [
+        ["linkText=forgot password or user name", "linkText"],
+        ["css=div:nth-child(6) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'forgot password or user name')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/login/forgot')]", "xpath:href"],
+        ["xpath=//div[5]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'forgot password or user name')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6d72c644-e12d-4c17-9b12-8abaf9d2dc32",
+      "comment": "",
+      "command": "click",
+      "target": "name=uname",
+      "targets": [
+        ["name=uname", "name"],
+        ["css=div:nth-child(3) > input", "css:finder"],
+        ["xpath=//input[@name='uname']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cc42290b-9c21-466f-985f-953f62583afe",
+      "comment": "",
+      "command": "click",
+      "target": "name=passwd",
+      "targets": [
+        ["name=passwd", "name"],
+        ["css=div:nth-child(4) > input", "css:finder"],
+        ["xpath=//input[@name='passwd']", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7590e31f-7843-4390-a4d4-035af476a070",
+      "comment": "",
+      "command": "click",
+      "target": "name=submit",
+      "targets": [
+        ["name=submit", "name"],
+        ["css=div:nth-child(7) > input", "css:finder"],
+        ["xpath=//input[@name='submit']", "xpath:attributes"],
+        ["xpath=//div[6]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "88e3b77e-4c90-4a69-8703-e45a4ca79e79",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "linkText=forgot password or user name",
+      "targets": [
+        ["linkText=forgot password or user name", "linkText"],
+        ["css=div:nth-child(7) > a", "css:finder"],
+        ["xpath=//a[contains(text(),'forgot password or user name')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/login/forgot')]", "xpath:href"],
+        ["xpath=//div[6]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'forgot password or user name')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "2e1407b2-46df-443c-b279-34e8641b45a4",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["e1daa7b8-3b66-4cac-a773-7c54a0b0f66b"]
+  }],
+  "urls": ["http://localhost:5000/"],
+  "plugins": []
+}
