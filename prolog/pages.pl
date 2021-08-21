@@ -208,8 +208,8 @@ loc_handler(Request) :-
                     }).
 
 latlong_uv(latlong(Lat, Long), uv(U, V)) :-
-    U is floor((Lat - 55.3844736) / 0.00008),
-    V is floor((Long - 9.9549184) / 0.00005).
+    U is floor((Lat - 55.3884917) / 0.00008),
+    V is floor((Long - 9.9402879) / 0.00005).
 
 		 /*******************************
 		 *       Generate User IDs
