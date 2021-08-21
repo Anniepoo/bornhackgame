@@ -200,9 +200,15 @@ loc_handler(Request) :-
             long(Long, [float])
         ]),
     debug(loc(parms), 'user ~w lat ~w long ~w', [User, Lat, Long]),
+    latlong_uv(latlong(Lat, Long), uv(U, V)),
+    format(string(S), 'user ~w lat ~w long ~w u ~w v ~w', [User, Lat, Long, U, V]),
     reply_json_dict(_{
-                        display: howdy
+                        display: S
                     }).
+
+latlong_uv(latlong(Lat, Long), uv(U, V)) :-
+    U is floor((Lat - 55.3844736) / 0.00008),
+    V is floor((Long - 9.9549184) / 0.00005).
 
 		 /*******************************
 		 *       Generate User IDs
