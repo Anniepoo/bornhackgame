@@ -201,7 +201,8 @@ loc_handler(Request) :-
         ]),
     debug(loc(parms), 'user ~w lat ~w long ~w', [User, Lat, Long]),
     latlong_uv(latlong(Lat, Long), uv(U, V)),
-    format(string(S), 'user ~w lat ~w long ~w u ~w v ~w', [User, Lat, Long, U, V]),
+    user_property(User, username(Name)),
+    format(string(S), 'user ~w lat ~w long ~w u ~w v ~w', [Name, Lat, Long, U, V]),
     reply_json_dict(_{
                         display: S
                     }).
