@@ -57,75 +57,95 @@ user:head(screen, Head) -->
 root_handler(_Request) :-
       reply_html_page(
           screen,
-          title(\local('Baraka')),
+          title(\local('Colossal Hack')),
           \home_page).
+
+
+content -->
+    html([
+        h1(class(title), 'Colossal Hack'),
+        button(id('find-me'), 'Hello out there'),
+        br([]),
+        h2(button),
+        p(id(status), ''),
+        a([id('map-link'),target('_blank')], ''),
+        h2(follow),
+        p(id(fstatus), ''),
+        a([id('fmap-link'),target('_blank')], ''),
+        \js_script({|javascript(_)||
+function follow_success(position) {
+  const status = document.querySelector('#fstatus');
+  const mapLink = document.querySelector('#fmap-link');
+
+    status.textContent = '';
+    const latitude  = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+    mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+
+}
+
+function follow_error() {
+  alert('Sorry, no position available.');
+}
+
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 30000,
+  timeout: 27000
+};
+
+
+const watchID = navigator.geolocation.watchPosition(follow_success, follow_error, options);
+
+function geoFindMe() {
+
+  const status = document.querySelector('#status');
+  const mapLink = document.querySelector('#map-link');
+
+  mapLink.href = '';
+  mapLink.textContent = '';
+
+  function success(position) {
+    const latitude  = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    status.textContent = '';
+    mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+    mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+  }
+
+  function error() {
+    status.textContent = 'Unable to retrieve your location';
+  }
+
+  if(!navigator.geolocation) {
+    status.textContent = 'Geolocation is not supported by your browser';
+  } else {
+    status.textContent = 'Locating…';
+    navigator.geolocation.getCurrentPosition(success, error);
+  }
+
+}
+
+document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
+                   |})
+                   ]).
+
+:- html_meta(bezel(html, ?, ?)).
+
+bezel(Content) -->
+    html(div(id(bezel), Content)).
 
 home_page -->
     html_requires(style),
     html(
         div(id(screen),
-            [
-                \nav,
-                \sell
-            ])).
+            \bezel(\content)
+           )).
 
-		 /*******************************
-		 *            Nav              *
-		 *******************************/
-
-nav -->
-    html(
-        div(id(nav),
-            [ \nbutton('Sell'),
-              \nbutton('m-pesa'),
-              \nbutton('audit')
-            ])).
-
-nbutton(Label) -->
-    { nav_href(Label, HREF) },
-    html(a(href(HREF), \local(Label))).
-
-nav_href('Sell', '/').
-nav_href('m-pesa', '/mpesa').
-nav_href('audit', '/audit').
-
-		 /*******************************
-		 *               Sell           *
-		 *******************************/
-
-sell -->
-    html([
-        p(id(total), ['0 KES']),
-        input([autofocus, id(price), type(number), name(item)], []),
-        \keyboard]).
-
-keyboard -->
-    html(
-        table(id(keyboard),
-              [
-            tr([
-                \numbtn(7),
-                \numbtn(8),
-                \numbtn(9)
-            ]),
-            tr([
-                \numbtn(4),
-                \numbtn(5),
-                \numbtn(6)
-            ]),
-            tr([
-                \numbtn(1),
-                \numbtn(2),
-                \numbtn(3)
-            ]),
-            tr(\numbtn(colspan(3), 0))
-        ])).
-
-numbtn(Digit) -->
-    html(td(Digit)).
-
-numbtn(Attr, Digit) -->
-    html(td(Attr, Digit)).
 
 secret_handler(_Request) :-
       reply_html_page(
@@ -150,4 +170,22 @@ ajax_handler(_Request) :-
     reply_json_dict(_{
                         displaytext: 'AJAX fetched me correctly'
                     }).
+
+:- http_handler(root(foo/A/B), dani_handler(A, B), []).
+
+dani_handler(A, B, _Request) :-
+    reply_json_dict(_{
+                        a: A,
+                        b: B
+                    }).
+
+
+
+
+
+
+
+
+
+
 
