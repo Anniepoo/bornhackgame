@@ -64,19 +64,14 @@ root_handler(_Request) :-
 content -->
     html([
         h1(class(title), 'Colossal Hack'),
-        button(id('find-me'), 'Hello out there'),
-        br([]),
-        h2(button),
-        p(id(status), ''),
-        a([id('map-link'),target('_blank')], ''),
-        h2(follow),
-        p(id(fstatus), ''),
+        p(id(fstatus), '...loading...'),
         a([id('fmap-link'),target('_blank')], ''),
         p(id(username), '...loading...'),
         \js_script({|javascript(_)||
 
 var identity = localStorage.getItem("bornhackgameid");
 var display_name = localStorage.getItem("bornhackgameusername");
+                    var n = 0;
 
 if (!identity) {
        fetch("/getid").then(function(response) {
@@ -100,9 +95,10 @@ function follow_success(position) {
     status.textContent = '';
     const latitude  = position.coords.latitude;
     const longitude = position.coords.longitude;
+n++;
 
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-    mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+    mapLink.textContent = `${n}  Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
 };
 
@@ -119,37 +115,6 @@ const options = {
 
 const watchID = navigator.geolocation.watchPosition(follow_success, follow_error, options);
 
-function geoFindMe() {
-
-  const status = document.querySelector('#status');
-  const mapLink = document.querySelector('#map-link');
-
-  mapLink.href = '';
-  mapLink.textContent = '';
-
-  function success(position) {
-    const latitude  = position.coords.latitude;
-    const longitude = position.coords.longitude;
-
-    status.textContent = '';
-    mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-    mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-  }
-
-  function error() {
-    status.textContent = 'Unable to retrieve your location';
-  }
-
-  if(!navigator.geolocation) {
-    status.textContent = 'Geolocation is not supported by your browser';
-  } else {
-    status.textContent = 'Locating…';
-    navigator.geolocation.getCurrentPosition(success, error);
-  }
-
-}
-
-document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
 
                    |})
