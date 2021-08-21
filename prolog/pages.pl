@@ -37,7 +37,7 @@ by_lang(_, Eng, Eng). % must remain at bottom
 		 *******************************/
 
 
-:- html_resource(style, [virtual,
+:- html_resource(style, [virtual, mime_type(text/css),
                          requires('css/style.css')]).
 
 
@@ -72,7 +72,27 @@ content -->
         h2(follow),
         p(id(fstatus), ''),
         a([id('fmap-link'),target('_blank')], ''),
+        p(id(username), '...loading...'),
         \js_script({|javascript(_)||
+
+var identity = localStorage.getItem("bornhackgameid");
+var display_name = localStorage.getItem("bornhackgameusername");
+
+if (!identity) {
+       fetch("/getid").then(function(response) {
+                             return response.json();
+                         })
+                       .then(function(myJson) {
+                                 localStorage.setItem("bornhackgameid", myJson.identity);
+                                 localStorage.setItem("bornhackgameusername", myJson.username);
+                                 identity = myJson.identity;
+                                 display_name = myJson.username;
+                                 document.getElementById("username").innerHTML = display_name;
+                             });
+   } else {
+      document.getElementById("username").innerHTML = display_name;
+   }
+
 function follow_success(position) {
   const status = document.querySelector('#fstatus');
   const mapLink = document.querySelector('#fmap-link');
@@ -84,11 +104,11 @@ function follow_success(position) {
     mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
     mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
 
-}
+};
 
 function follow_error() {
   alert('Sorry, no position available.');
-}
+};
 
 const options = {
   enableHighAccuracy: true,
@@ -130,6 +150,7 @@ function geoFindMe() {
 }
 
 document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
 
                    |})
                    ]).
@@ -179,9 +200,52 @@ dani_handler(A, B, _Request) :-
                         b: B
                     }).
 
+		 /*******************************
+		 *       Generate User IDs
+		 *******************************/
 
 
+:- http_handler(root(getid) ,
+                getid_handler,
+                [id(getid_handler)]).
 
+getid_handler(_Request) :-
+    create_user(ID),
+    create_username(Name),
+    set_user_property(ID, username(Name)),
+    reply_json_dict(_{
+                       identity: ID,
+                       username: Name
+                    }).
+
+create_user(ID) :-
+    uuid(ID).
+
+create_username(Name) :-
+    prop_names(PN),
+    qualities(Q),
+    random_member(PropName, PN),
+    random_member(Quality, Q),
+    append([PropName, ` the `, Quality], Code),
+    string_codes(Name, Code),
+    \+ user_property(_, username(Name)).
+
+prop_names([`Arnold`, `Betty`, `Carl`, `Doofus`, `Earl`,
+          `Floyd`, `Günther`, `Hans`, `Ingrid`, `Johan`,
+          `Bübba`, `Kushboo`, `Lemonade`, `Otopöpø`,
+          `Poobah`, `Quax`, `Rohan`, `Smoochie`, `Türin`,
+          `Uvula`, `Veritas`, `Prospero`, `Xugyrius`,
+           `Yendor`, `Zymax`]).
+
+qualities([`Amiable`, `Blepharious`, `Confident`, `Dork`,
+           `Earnest`, `Foobaric`, `Garbage Collecter`,
+           `Hospitable`, `Idler`, `Mendacious`, `Ruminant`,
+           `Jr Dev`, `Optional`, `Insignificant`, `Sane`,
+           `Unsteady`, `Flatulent`, `Billious`, `Calm`,
+           `Effervescent`, `Drunkard`, `Fearless`, `Steadfast`,
+           `Questionable`, `Domestic`, `Fairly Decent Looking`,
+           `Normal`, `Sometimes Helpful`, `Handy`, `Chicken Farmer`,
+           `Vogon`, `Woolgatherer`]).
 
 
 

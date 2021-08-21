@@ -33,7 +33,7 @@ go :-
     use_default_db,
     http_set_session_options(
         [ create(noauto),
-          timeout(1800)  % half hour sessions
+          timeout(1800)  % 30 minutes
        %   ,ssl([
         %      certificate_file('/etc/letsencrypt/live/partyserver.rocks/cert.pem'),
          %       key_file('/etc/letsencrypt/live/partyserver.rocks/privkey.pem')
@@ -44,7 +44,6 @@ go :-
     writeln('Need to be on SWI-Prolog 8.1.0 or better, you are on'),
     version.
 
-
 :- http_handler('/html/', http_reply_from_files('../web/html/', []), [prefix]).
 
 :- http_handler('/img/', http_reply_from_files('../web/img/', []), [prefix]).
@@ -54,6 +53,33 @@ go :-
 :- http_handler('/font/', http_reply_from_files('../web/fonts/', []), [prefix]).
 
 :- http_handler('/css/', http_reply_from_files('../web/css/', []), [prefix]).
+
+:- set_setting(identity:constraints,
+    _{
+        email: _{ min: 4,
+                  max: 128,
+                  regex: '^[A-Za-z0-9\\-_\\+\\.]+@(([A-Za-z0-9\\-_\\+]+)\\.)+[A-Za-z0-9]+$',
+                  warn: 'Must vaguely look like an email address'
+                },
+        uname: _{ min: 4,
+                  max: 128,
+                  regex: '^[A-Za-z0-9\\-_\\+\\.]{4,128}$',
+                  warn: 'User name must be 4-128 characters from a-z, A-Z, 0-9, - and _'
+                },
+        passwd: _{ min: 4,
+                   max: 999,
+                   regex: '^.{8,999}$',
+                   warn:  'Password must be at least 8 long'
+                 },
+        passwd2: _{
+                     min: 4,
+                     max: 999,
+                     regex: '^.{8,999}$',
+                     warn: 'Field below must match password'
+                 }
+    }).
+
+
 
 
 
