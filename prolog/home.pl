@@ -7,9 +7,6 @@
 :- use_module(library(http/js_write)).
 :- use_module(library(http/http_json)).
 
-
-
-
 content -->
     html([
         h1(class(title), 'Colossal Hack'),
