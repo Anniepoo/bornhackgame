@@ -17,7 +17,6 @@ user:file_search_path(library, Identity) :-
     format(atom(Identity), '~w/identity/prolog', [Home]).
 
 :- use_module(library(identity/login_database), [use_default_db/0,
-                                                current_user//0,
                                                 retractall_user_property/2]).
 :- use_module(library(settings)).
 

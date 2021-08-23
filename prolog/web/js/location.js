@@ -16,6 +16,7 @@ function at_target(Lat, Long, Target) {
   const rsq = 111195.0 * 111195.0 * ((Lat - Target.latitude) * (Lat - Target.latitude) +
     (Long - Target.longitude) * (Long - Target.longitude) * 0.32);
   console.log(rsq);
+  document.getElementById('loc').innerHTML = rsq.toString();
   return rsq < 25.0; // 5 meters
 }
 
