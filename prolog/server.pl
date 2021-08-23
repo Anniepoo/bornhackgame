@@ -20,7 +20,7 @@ user:file_search_path(library, Identity) :-
 :- use_module(library(identity/login_database), [use_default_db/0,
                                                 current_user//0,
                                                 retractall_user_property/2]).
-:- use_module(library(identity/login_static)).
+% :- use_module(library(identity/login_static)).
 
 :- use_module(library(settings)).
 

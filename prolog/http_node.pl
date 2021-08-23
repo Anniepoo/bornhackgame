@@ -1,5 +1,5 @@
 :- module(http_node,
-          [node/1,
+          [node/2,
           bkgnd//1,
           travel//2,
           approve//1]).
@@ -11,7 +11,7 @@
 :- use_module(library(http/js_write)).
 :- use_module(library(http/html_head)).
 
-:- multifile loc/3.
+:- use_module(journey, [loc/3]).
 
 %!  node(-Cmds:list) is nondet
 %
@@ -31,16 +31,17 @@
 %   $ \approve(Name)
 %   : poll waiting until you're 'approved' - will have a special uri to
 %     approve. Start with shelling into the server and cli approval.
+:- html_meta(node(-, html)).
 
-node([name(Name) | Cmds]) :-
+node(Name, Cmds) :-
     b_setval(node_name, Name),
     atom_concat(Name, '_handler', HandlerName),
     HandlerHead =.. [HandlerName, _],
     cmds_handler(Cmds, HandlerBody),
-    asserta(':-'(HandlerHead, HandlerBody)),
-    http_handler(game(Name), HandlerName, [id(Name)]).
+    writeln(':-'(HandlerHead, HandlerBody)),
+    writeln(http_handler(game(Name), HandlerName, [id(Name)])).
 
-:- meta_predicate cmds_handler(+, 0).
+:- meta_predicate cmds_handler(+, -).
 
 cmds_handler(Cmds,
              reply_html_page(game,
@@ -69,3 +70,5 @@ travel(Target , Node) -->
                |})
    ]).
 
+approve(Node) -->
+   html(p('Approve is todo for node ~w'-[Node])).

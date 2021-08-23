@@ -1,4 +1,9 @@
-:- module(journey, []).
+:- module(journey, [
+          loc/3]).
+
+
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/html_write)).
 
 :- use_module(http_node).
 
@@ -11,18 +16,44 @@
 loc(tkkrlab, "Tkkrlab- home of wizards", ll(55.38884524, 9.9404279)).
 loc(toilet, "test location", ll(55.3883914, 9.9400427)).
 
-:- html_meta(node(html)).
+start_handler(_):-
+    reply_html_page(
+        game,
+        title(start),
+        \html([h1('Start state'),
+               \travel(tkkrlab,tkkrlab)])).
 
-:- node([name('.'),
-         h1('Start state'),
+:-http_handler(game(start),
+             start_handler,
+             [id(start)]).
+
+tkkrlab_handler(_):-
+    reply_html_page(
+        game,
+        title(tkkrlab),
+        \html([h1('Tkkrlab'),\travel(test,test)])).
+
+:-http_handler(game(tkkrlab),tkkrlab_handler,[id(tkkrlab)]).
+
+test_handler(_):-
+    reply_html_page(game,
+                    title(test),
+                    \html([h1('Test'),\travel(tkkrlab,tkkrlab)])).
+
+:-http_handler(game(test),test_handler,[id(test)]).
+
+
+define_nodes :-
+    node(start,
+         [h1('Start state'),
          \travel(tkkrlab, tkkrlab)
-        ]).
-:- node([name(tkkrlab),
-         h1('Tkkrlab'),
+        ]),
+    node(tkkrlab,
+         [h1('Tkkrlab'),
          \travel(test, test)
-        ]).
-:- node([name(test),
-         h1('Test'),
+        ]),
+   node(test,
+         [h1('Test'),
          \travel(tkkrlab, tkkrlab)
         ]).
 /*

@@ -42,23 +42,25 @@ by_lang(_, Eng, Eng). % must remain at bottom
 :- html_resource(style, [virtual, mime_type(text/css),
                          requires('css/style.css')]).
 
-:- html_resource(location, [virtual, mime_type(application/json),
+:- html_resource(location_seek, [virtual, mime_type(text/javascript),
                             ordered(true),
-                            requires('js/identity.js'),
-                            requires('js/location.js')]).
+                            requires('/js/identity.js'),
+                            requires('/js/location.js')]).
 
-:- html_resource(identity, [virtual, mime_type(application/json),
-                            requires('js/identity.js')]).
+:- html_resource(identity, [virtual, mime_type(text/javascript),
+                            requires('/js/identity.js')]).
 
 		 /*******************************
 		 *      Pages               *
 		 *******************************/
+/*
 :- multifile user:head//2.
 
-user:head(screen, Head) -->
+user:head(X, Head) -->
+    {gtrace},
     html(head([meta([name(viewport), content('width=device-width, initial-scale=1.0')], []) |
                 Head])).
-
+*/
 
 :- http_handler(root(admin), admin_handler, [id(admin)]).
 :- http_handler(root(secret), secret_handler, [id(secret), role(user)]).
