@@ -48,17 +48,26 @@ user:file_search_path(js, 'web/js').
 user:file_search_path(css, 'web/css').
 user:file_search_path(img, 'web/icons').
 user:file_search_path(html, 'web/html').
-user:file_search_path(html, 'web/fonts').
+user:file_search_path(fonts, 'web/fonts').
 
-:- http_handler('/html/', http_reply_from_files(html(.), []), [prefix]).
+http:location(js, '/js', []).
+http:location(img, '/icons', []).
+http:location(css, '/css', []).
+http:location(html, '/html', []).
+http:location(fonts, '/font', []).
 
-:- http_handler('/img/', http_reply_from_files(img(.), []), [prefix]).
 
-:- http_handler('/js/', http_reply_from_files(js(.), []), [prefix]).
+:- http_handler(html(.), http_reply_from_files(html(.), []), [prefix]).
 
-:- http_handler('/font/', http_reply_from_files(fonts(.), []), [prefix]).
+:- http_handler(img(.), http_reply_from_files(img(.), []), [prefix]).
 
-:- http_handler('/css/', http_reply_from_files(css(.), []), [prefix]).
+:- http_handler(js(.), http_reply_from_files(js(.), []), [prefix]).
+
+:- http_handler(fonts(.), http_reply_from_files(fonts(.), []), [prefix]).
+
+:- http_handler(css(.), http_reply_from_files(css(.), []), [prefix]).
+
+
 
 :- set_setting(identity:constraints,
     _{
