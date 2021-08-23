@@ -26,6 +26,8 @@ user:file_search_path(library, Identity) :-
 
 :- ensure_loaded(pages).
 
+:- ensure_loaded(journey).
+
 go :-
     load_settings('settings.db'),
     current_prolog_flag(version, X),
@@ -55,6 +57,7 @@ http:location(img, '/icons', []).
 http:location(css, '/css', []).
 http:location(html, '/html', []).
 http:location(fonts, '/font', []).
+http:location(game, '/game', []).
 
 
 :- http_handler(html(.), http_reply_from_files(html(.), []), [prefix]).

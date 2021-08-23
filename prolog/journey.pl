@@ -1,39 +1,40 @@
 :- module(journey, []).
 
-:- multifile loc/2.
+:- use_module(http_node).
+
+:- multifile loc/3.
 
 % Thomas
 % Hackmeister.dk
 %
 
-loc(tkkrlab, "Tkkrlab- home of wizards", box(-1,-2,1,2)).
-loc(toilet, todo).
+loc(tkkrlab, "Tkkrlab- home of wizards", ll(55.38884524, 9.9404279)).
+loc(toilet, "test location", ll(55.3883914, 9.9400427)).
 
-%!  node(-Cmds:list) is nondet
-%
-%   @arg Name name of the node
-%   @arg Cmds bhgl commands
-%
-%   $ name/1
-%   : must be first, is the name of the node. Node is at /game/<Name>
-%   $ <html>
-%   : Any termerized html suitable for html//1
-%   $ bkgnd()
-%   : I is a path to the background image
-%   $ travel(Target, Node)
-%   : when you travel to target Target you will be moved to node Node
-%   $ approve(Name)
-%   : poll waiting until you're 'approved' - will have a special uri to
-%     approve. Start with shelling into the server and cli approval.
-node([name('.'),
-      bkgnd(img('gameintro.png')),
+:- html_meta(node(html)).
+
+:- node([name('.'),
+         h1('Start state'),
+         \travel(tkkrlab, tkkrlab)
+        ]).
+:- node([name(tkkrlab),
+         h1('Tkkrlab'),
+         \travel(test, test)
+        ]).
+:- node([name(test),
+         h1('Test'),
+         \travel(tkkrlab, tkkrlab)
+        ]).
+/*
+:-node([name('.'),
+      \bkgnd(img('gameintro.png')),
       h1('Before it Starts...'),
       p('You are in the land of the Danes, in a field, on a cold, rainy summer day. The field has surprisingly good internet.'),
       p('You feel a trembling in your nether regions'),
-      travel(toilet, toilet)
+      \travel(toilet, toilet)
      ]).
-node([name(toilet),
-      bkgnd(img('toilet.png')),
+:-node([name(toilet),
+      \bkgnd(img('toilet.png')),
       h1('The Throne of Justice'),
       p('As you sit on the throne of justice, you contemplate your life.'),
       p(i('Is being a Sharepoint developer all there is to life? Is there more?')),
@@ -43,13 +44,14 @@ node([name(toilet),
       p('You must find a powerful wizard to guide you'),
       p('Would it be easier to go get a beer instead?'),
       p('You rise, wipe your bum, and emerge refreshed. Ready for a new beginning. For this is only the Prolog.'),
-      travel(tkkrlab, findwizard)
+      \travel(tkkrlab, findwizard)
       ]).
-node([name(findwizard),
+:-node([name(findwizard),
+      \bkgnd(img('neutral.png')),
       h1('The Wizard of Prolog'),
       p('You sense an immense power. 110 Volts.'),
       % Annie comes out as the wizard of swi-prolog
-      approve(questdelivered)
+      \approve(questdelivered)
      ]).
 % Hail seeker.
 % Annie appears and announces that the most important part of being a
@@ -60,7 +62,7 @@ node([name(findwizard),
 % But if you return, suitably attired, I will greet you as a fellow
 % wizard.
 %
-node([name(questdelivered),
+:-node([name(questdelivered),
       h1(class(blinking), 'WARNING'),
       h2(\player_name),
       p('Server BX321-4B has failed.'),
@@ -73,5 +75,5 @@ node([name(questdelivered),
 %
 
 
-
+*/
 

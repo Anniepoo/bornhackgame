@@ -42,6 +42,13 @@ by_lang(_, Eng, Eng). % must remain at bottom
 :- html_resource(style, [virtual, mime_type(text/css),
                          requires('css/style.css')]).
 
+:- html_resource(location, [virtual, mime_type(application/json),
+                            ordered(true),
+                            requires('js/identity.js'),
+                            requires('js/location.js')]).
+
+:- html_resource(identity, [virtual, mime_type(application/json),
+                            requires('js/identity.js')]).
 
 		 /*******************************
 		 *      Pages               *
@@ -53,32 +60,31 @@ user:head(screen, Head) -->
                 Head])).
 
 
-:- http_handler(root(.), root_handler, [id(home)]).
+:- http_handler(root(admin), admin_handler, [id(admin)]).
 :- http_handler(root(secret), secret_handler, [id(secret), role(user)]).
 
-root_handler(_Request) :-
+admin_handler(_Request) :-
       reply_html_page(
           screen,
           title(\local('Colossal Hack')),
-          \home_page).
+          \admin_page).
 
 :- html_meta(bezel(html, ?, ?)).
 
 bezel(Content) -->
     html(div(id(bezel), Content)).
 
-home_page -->
+admin_page -->
     html_requires(style),
     html(
         div(id(screen),
             \bezel(\content)
            )).
 
-
 secret_handler(_Request) :-
       reply_html_page(
           title('Secret Page'),
-          [a(href(location_by_id(home)), 'link to home page'),
+          [a(href(location_by_id(admin)), 'link to admin page'),
            a(href(location_by_id(logout)), 'Log Out'),
            div(id(loadbyajax), 'not yet loaded by ajax'),
            p(\current_user),
