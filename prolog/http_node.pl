@@ -57,8 +57,8 @@ bkgnd(Img) -->
 travel(Target , Node) -->
     {  loc(Target, Name, ll(Lat, Long)) },
     html([
-    \html_requires(identity),
-    \html_requires(location_seek),
+    \html_requires('/js/identity.js'),
+    \html_requires('/js/location.js'),
          p('go to ~w at ~w ~w'-[Name, Lat, Long]),
          p(id(loc), '...loading...'),
     \js_script({|javascript(Lat, Long, Node)||

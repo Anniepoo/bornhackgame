@@ -16,14 +16,14 @@ function at_target(Lat, Long, Target) {
   const rsq = 111195.0 * 111195.0 * ((Lat - Target.latitude) * (Lat - Target.latitude) +
     (Long - Target.longitude) * (Long - Target.longitude) * 0.32);
   console.log(rsq);
-  return rsq < 2.5e-7; // 5 meters
+  return rsq < 25.0; // 5 meters
 }
 
 function follow_success(position) {
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
 
-  for (target in targets) {
+  for (target of targets) {
     if (at_target(latitude, longitude, target)) {
       in_process = true;
       document.location.href =

@@ -5,34 +5,10 @@
 :- use_module(library(http/http_session)).
 :- use_module(library(http/js_write)).
 :- use_module(library(http/http_json)).
-:- use_module(library(identity/customize)).
 :- use_module(library(identity/login_database)).
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_parameters)).
 :- use_module(home).
-
-
-customize:local_hook(Eng, Local) :-
-    catch(
-        (   current_user(UName),
-            (   user_property(UName, lang(Lang))
-            ;   Lang = eng
-            ),
-            by_lang(Lang, Eng, Local),
-            !
-        ),
-        error(existence_error(http_session, _), _),
-        Local = Eng
-    ).
-
-by_lang(eng, Eng, Eng).
-by_lang(swahili, 'Baraka', 'Baraka').
-by_lang(swahili, 'Sell', 'kuuza').
-by_lang(swahili, 'Audit', 'ukaguzi').
-
-
-by_lang(_, Eng, Eng). % must remain at bottom
-
 
 		 /*******************************
 		 *            Resources       *
@@ -42,13 +18,10 @@ by_lang(_, Eng, Eng). % must remain at bottom
 :- html_resource(style, [virtual, mime_type(text/css),
                          requires('css/style.css')]).
 
-:- html_resource(location_seek, [virtual, mime_type(text/javascript),
-                            ordered(true),
-                            requires('/js/identity.js'),
-                            requires('/js/location.js')]).
+:- html_resource('/js/location.js', [mime_type(text/javascript)]).
 
-:- html_resource(identity, [virtual, mime_type(text/javascript),
-                            requires('/js/identity.js')]).
+:- html_resource('/js/identity.js', [mime_type(text/javascript)]).
+
 
 		 /*******************************
 		 *      Pages               *
@@ -63,12 +36,12 @@ user:head(X, Head) -->
 */
 
 :- http_handler(root(admin), admin_handler, [id(admin)]).
-:- http_handler(root(secret), secret_handler, [id(secret), role(user)]).
+
 
 admin_handler(_Request) :-
       reply_html_page(
           screen,
-          title(\local('Colossal Hack')),
+          title('Colossal Hack'),
           \admin_page).
 
 :- html_meta(bezel(html, ?, ?)).
@@ -82,23 +55,6 @@ admin_page -->
         div(id(screen),
             \bezel(\content)
            )).
-
-secret_handler(_Request) :-
-      reply_html_page(
-          title('Secret Page'),
-          [a(href(location_by_id(admin)), 'link to admin page'),
-           a(href(location_by_id(logout)), 'Log Out'),
-           div(id(loadbyajax), 'not yet loaded by ajax'),
-           p(\current_user),
-           \js_script({| javascript(_) ||
-     fetch("/ajax").then(function(response) {
-                             return response.json();
-                         })
-                       .then(function(myJson) {
-                                 document.getElementById("loadbyajax").innerHTML = myJson.displaytext;
-                             });
-              |})
-          ]).
 
 :- http_handler(root(ajax), ajax_handler, [id(ajax), role(user)]).
 

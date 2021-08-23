@@ -21,6 +21,7 @@ start_handler(_):-
         game,
         title(start),
         \html([h1('Start state'),
+               p(id(username), ''),
                \travel(tkkrlab,tkkrlab)])).
 
 :-http_handler(game(start),
@@ -31,14 +32,18 @@ tkkrlab_handler(_):-
     reply_html_page(
         game,
         title(tkkrlab),
-        \html([h1('Tkkrlab'),\travel(test,test)])).
+        \html([h1('Tkkrlab'),
+               p(id(username), ''),
+               \travel(test,test)])).
 
 :-http_handler(game(tkkrlab),tkkrlab_handler,[id(tkkrlab)]).
 
 test_handler(_):-
     reply_html_page(game,
                     title(test),
-                    \html([h1('Test'),\travel(tkkrlab,tkkrlab)])).
+                    \html([h1('Test'),
+                           p(id(username), ''),
+                           \travel(tkkrlab,tkkrlab)])).
 
 :-http_handler(game(test),test_handler,[id(test)]).
 
