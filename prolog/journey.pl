@@ -2,65 +2,62 @@
           loc/3]).
 
 
-:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_server)).
 :- use_module(library(http/html_write)).
 
 :- use_module(http_node).
 
 :- multifile loc/3.
 
+% hardware folks at Bornhack
 % Thomas
 % Hackmeister.dk
 %
 
 loc(tkkrlab, "Tkkrlab- home of wizards", ll(55.38884524, 9.9404279)).
-loc(toilet, "test location", ll(55.3883914, 9.9400427)).
+loc(toilet, "toilet", ll(55.3883914, 9.9400427)).
+loc(test, "test location", ll(55.3888, 9.405)).
+loc(foo, "foo location", ll(55.3887, 9.9402)).
 
-start_handler(_):-
+:-html_meta(node(+, +, html)).
+
+node(Name, Desc, AddlHTML) :-
+    http_handler(game(Name),
+                 node_handler(Name, Desc, AddlHTML),
+                 [id(Name)]).
+
+
+:- html_meta node_handler(+, +, html, +).
+
+node_handler(Name, Desc, AddlHTML, _Request) :-
     reply_html_page(
         game,
-        title(start),
-        \html([h1('Start state'),
-               p(id(username), ''),
-               \travel(tkkrlab,tkkrlab)])).
+        title(Name),
+        [h1(Desc),
+         p(id(username), ''),
+         \includemore(AddlHTML),
+        p(id(coords), '...loading...')]).
 
-:-http_handler(game(start),
-             start_handler,
-             [id(start)]).
+includemore(H) -->
+    {strip_module(H, _, P)},
+    html(P).
 
-tkkrlab_handler(_):-
-    reply_html_page(
-        game,
-        title(tkkrlab),
-        \html([h1('Tkkrlab'),
-               p(id(username), ''),
-               \travel(test,test)])).
+:- node(foo, "You are at the big sign that says FOO",
+        \travel(tkkrlab, tkkrlab)).
+:- node(start,
+        "start- You feel an urge to go to the pooper or Tkkrlab",
+        [\travel(tkkrlab, tkkrlab), \travel(toilet, toilet)]).
+:- node(tkkrlab, "You are at Tkkrlab",
+        [\travel(test, test), \travel(toilet, toilet)]).
+:- node(test, "You are at Test",
+        [\travel(start, start), \travel(toilet, toilet)]).
+:- node(toilet, "You are at the pooper",
+        \travel(tkkrlab, tkkrlab)).
 
-:-http_handler(game(tkkrlab),tkkrlab_handler,[id(tkkrlab)]).
+% if you are at a target it should call in when you leave.
+% need to design this.
+% in
 
-test_handler(_):-
-    reply_html_page(game,
-                    title(test),
-                    \html([h1('Test'),
-                           p(id(username), ''),
-                           \travel(tkkrlab,tkkrlab)])).
-
-:-http_handler(game(test),test_handler,[id(test)]).
-
-
-define_nodes :-
-    node(start,
-         [h1('Start state'),
-         \travel(tkkrlab, tkkrlab)
-        ]),
-    node(tkkrlab,
-         [h1('Tkkrlab'),
-         \travel(test, test)
-        ]),
-   node(test,
-         [h1('Test'),
-         \travel(tkkrlab, tkkrlab)
-        ]).
 /*
 :-node([name('.'),
       \bkgnd(img('gameintro.png')),

@@ -15,8 +15,7 @@
 		 *******************************/
 
 
-:- html_resource(style, [virtual, mime_type(text/css),
-                         requires('css/style.css')]).
+:- html_resource('css/style.css', [mime_type(text/css)]).
 
 :- html_resource('/js/location.js', [mime_type(text/javascript)]).
 
@@ -26,14 +25,18 @@
 		 /*******************************
 		 *      Pages               *
 		 *******************************/
-/*
+
 :- multifile user:head//2.
 
 user:head(X, Head) -->
-    {gtrace},
+     { member(X, [game, default, screen]) ,!},
     html(head([meta([name(viewport), content('width=device-width, initial-scale=1.0')], []) |
                 Head])).
-*/
+user:head(X, Head) -->
+     { debug(bornhack(style), '~w', [X])},
+    html(head([meta([name(viewport), content('width=device-width, initial-scale=1.0')], []) |
+                Head])).
+
 
 :- http_handler(root(admin), admin_handler, [id(admin)]).
 
@@ -50,27 +53,11 @@ bezel(Content) -->
     html(div(id(bezel), Content)).
 
 admin_page -->
-    html_requires(style),
+    html_requires('/js/style.css'),
     html(
         div(id(screen),
             \bezel(\content)
            )).
-
-:- http_handler(root(ajax), ajax_handler, [id(ajax), role(user)]).
-
-ajax_handler(_Request) :-
-    reply_json_dict(_{
-                        displaytext: 'AJAX fetched me correctly'
-                    }).
-
-:- http_handler(root(foo/A/B), dani_handler(A, B), []).
-
-dani_handler(A, B, _Request) :-
-    reply_json_dict(_{
-                        a: A,
-                        b: B
-                    }).
-
 
 		 /*******************************
 		 *  User moved   *
