@@ -8,6 +8,7 @@ var latmin = -10000.0;
 var latmax = -10000.0;
 var longmin = -10000.0;
 var longmax = -10000.0;
+var in_process = false;
 
 var targets = Array();
 
@@ -26,6 +27,12 @@ function at_target(Lat, Long, Target) {
 function follow_success(position) {
   const latitude = position.coords.latitude;
   const longitude = position.coords.longitude;
+
+  // we might not have the identity at startup,
+  // so we poll.
+  if (!identity) {
+    return;
+  }
 
   // see if we hit a target
   for (target of targets) {

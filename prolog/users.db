@@ -3,3 +3,8 @@ assert(u_prop(annie,password_hash('$pbkdf2-sha512$t=131072$Aziz17grKWd47WqW2eSex
 assert(u_prop(annie,email('annie@theelginworks.com'))).
 assert(u_prop(annie,role(user))).
 assert(u_prop('74b06040-0272-11ec-a9f5-835a281054e7',username("Otopöpø the Insignificant"))).
+assert(u_prop('d4467a7c-0dc5-11ec-a8c1-0384667f1c53',username("Smoochie the Earnest"))).
+assert(u_prop('890a97fe-0dc6-11ec-84ab-834a136f8ab6',username("Earl the Vogon"))).
+assert(u_prop('45418f4e-0dc8-11ec-805d-6ff19015ff35',username("Carl the Normal"))).
+assert(u_prop('87d2042e-0dc8-11ec-9ca2-33d21b5dfb2b',username("Johan the Ruminant"))).
+assert(u_prop('ea78f70a-0dcc-11ec-b1a7-dbaab000354a',username("Uvula the Questionable"))).

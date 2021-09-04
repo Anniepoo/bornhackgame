@@ -36,6 +36,29 @@ user:head(X, Head) -->
                 Head])).
 
 
+:- http_handler(root(.), home_handler, [id(home)]).
+
+
+home_handler(_Request) :-
+      reply_html_page(
+          screen,
+          title('Colossal Hack'),
+          \home_page).
+
+:- html_meta(bezel(html, ?, ?)).
+
+bezel(Content) -->
+    html(div(id(bezel), Content)).
+
+home_page -->
+    html_requires('/js/style.css'),
+    html(
+        div(id(screen),
+            \bezel(\content)
+           )).
+
+
+
 :- http_handler(root(admin), admin_handler, [id(admin)]).
 
 
@@ -44,11 +67,6 @@ admin_handler(_Request) :-
           screen,
           title('Colossal Hack'),
           \admin_page).
-
-:- html_meta(bezel(html, ?, ?)).
-
-bezel(Content) -->
-    html(div(id(bezel), Content)).
 
 admin_page -->
     html_requires('/js/style.css'),
@@ -127,6 +145,17 @@ qualities([`Amiable`, `Blepharious`, `Confident`, `Dork`,
            `Questionable`, `Domestic`, `Fairly Decent Looking`,
            `Normal`, `Sometimes Helpful`, `Handy`, `Chicken Farmer`,
            `Vogon`, `Woolgatherer`]).
+
+
+
+
+
+
+
+
+
+
+
 
 
 
