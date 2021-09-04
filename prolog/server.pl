@@ -12,12 +12,7 @@
 :- use_module(library(http/http_ssl_plugin)).
 :- use_module(library(http/http_files)).
 
-user:file_search_path(library, Identity) :-
-    getenv('HOME', Home),
-    format(atom(Identity), '~w/identity/prolog', [Home]).
-
-:- use_module(library(identity/login_database), [use_default_db/0,
-                                                retractall_user_property/2]).
+:- use_module(database, [use_default_db/0, retractall_user_property/2]).
 :- use_module(library(settings)).
 
 :- ensure_loaded(pages).
