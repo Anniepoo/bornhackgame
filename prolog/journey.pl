@@ -4,6 +4,7 @@
 
 :- use_module(library(http/http_server)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/html_head)).
 
 :- use_module(http_node).
 
@@ -18,6 +19,7 @@ loc(tkkrlab, "Tkkrlab- home of wizards", ll(55.38884524, 9.9404279)).
 loc(toilet, "toilet", ll(55.3883914, 9.9400427)).
 loc(test, "test location", ll(55.3888, 9.405)).
 loc(foo, "foo location", ll(55.3887, 9.9402)).
+loc(start, "start location", ll(55.3812, 9.9103)).
 
 :-html_meta(node(+, +, html)).
 
@@ -33,14 +35,19 @@ node_handler(Name, Desc, AddlHTML, _Request) :-
     reply_html_page(
         game,
         title(Name),
-        [h1(Desc),
+        [\html_requires('/css/style.css'),
+         h1(Desc),
          p(id(username), ''),
          \includemore(AddlHTML),
         p(id(coords), '...loading...')]).
 
+/*
 includemore(H) -->
     {strip_module(H, _, P)},
-    html(P).
+    html(P). */
+includemore(H, A, B) :-
+    strip_module(H, M, P),
+    @(html(P, A, B), M).
 
 :- node(foo, "You are at the big sign that says FOO",
         \travel(tkkrlab, tkkrlab)).
