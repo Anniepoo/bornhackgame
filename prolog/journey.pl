@@ -36,10 +36,11 @@ node_handler(Name, Desc, AddlHTML, _Request) :-
         game,
         title(Name),
         [\html_requires('/css/style.css'),
+         div(id(playarea), div(id(playcontent), [
          h1(Desc),
          p(id(username), ''),
          \includemore(AddlHTML),
-        p(id(coords), '...loading...')]).
+        p(id(coords), '...loading...')]))]).
 
 /*
 includemore(H) -->

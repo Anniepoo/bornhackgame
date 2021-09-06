@@ -1,11 +1,64 @@
+@font-face {
+    font-family: Planewalker;
+    src: url(/fonts/Planewalker.otf);
+  }
+  @font-face {
+    font-family: Planewalker;
+    src: url(/fonts/Planewalker_Bold.otf);
+    font-weight: bold;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: Planewalker;
+    src: url(/fonts/Planewalker_Bold_italic.otf);
+    font-weight: bold;
+    font-style: italic;
+  }
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Planewalker, sans-serif;
 }
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: #b5a6d7;
+}
+
+#playarea {
+    border: 30px solid transparent;
+    border-image: url('/icons/bezel.png') 100 round;
+    max-width: 500px;
+    max-height: 1000px;
+    height: 100%;
+    width: 100%;
+    background-image: repeating-radial-gradient(circle closest-side,  #b5a6d7 0%, #7340e4 17%, #b5a6d7 33%, #7340e4 50%, #b5a6d7 67%, #7340e4 83%, #b5a6d7 100%);
+}
+
+#playcontent {
+    text-align: center;
+    margin: 1em;
+}marin
 
 table {
     width: 100%;
+}
+
+a {
+    border-radius: 0.5em;
+    background-color: #b5a6d7;
+    padding: 0.25em 0.5em;
+    font-weight: bold;
+    border: 3px outset #c2b7db;
+    text-decoration: none;
+    filter: drop-shadow(5px 5px 12px #b5a6d7);
+}
+
+p {
+    margin: 1.5em 0;
 }
 
 #screen {

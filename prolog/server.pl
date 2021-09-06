@@ -47,7 +47,7 @@ http:location(js, '/js', []).
 http:location(img, '/icons', []).
 http:location(css, '/css', []).
 http:location(html, '/html', []).
-http:location(fonts, '/font', []).
+http:location(fonts, '/fonts', []).
 http:location(game, '/game', []).
 
 
