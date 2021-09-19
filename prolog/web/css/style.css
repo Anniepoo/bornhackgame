@@ -41,7 +41,15 @@ body {
 #playcontent {
     text-align: center;
     margin: 1em;
-}marin
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 2vw;
+    filter: drop-shadow(2px 2px 1px #b5a6d7);
+    color: beige;
+}
 
 table {
     width: 100%;
